@@ -12,10 +12,12 @@ public class PlayerScript : MonoBehaviour
     bool grounded;
     float horizontalMovement;
 
+    Rigidbody myRigidbody;
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        myRigidbody = this.GetComponent<Rigidbody>();
     }
 
     private void Update()
@@ -28,17 +30,19 @@ public class PlayerScript : MonoBehaviour
         {
             jumping = false;
         }
+
+        horizontalMovement = Input.GetAxis("Horizontal");
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
-        horizontalMovement = this.transform.position.x + Input.GetAxis("Horizontal") * Time.deltaTime * speed;
-        this.transform.position = new Vector3(horizontalMovement, this.transform.position.y, this.transform.position.z);
+        horizontalMovement = horizontalMovement * Time.deltaTime * speed;
+        myRigidbody.position = new Vector3(myRigidbody.position.x + horizontalMovement, myRigidbody.position.y, myRigidbody.position.z);
 
         if (jumping && grounded)
         {
-            this.GetComponent<Rigidbody>().AddForce(0.0f, jumpHeight, 0.0f, ForceMode.Impulse);
+            myRigidbody.AddForce(0.0f, jumpHeight, 0.0f, ForceMode.Impulse);
         }
     }
 
