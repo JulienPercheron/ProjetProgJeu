@@ -13,11 +13,13 @@ public class PlayerScript : MonoBehaviour
     float horizontalMovement;
 
     Rigidbody myRigidbody;
+    Animator animator;
 
     // Start is called before the first frame update
     void Start()
     {
         myRigidbody = this.GetComponent<Rigidbody>();
+        animator = this.GetComponent<Animator>();
     }
 
     private void Update()
@@ -31,14 +33,32 @@ public class PlayerScript : MonoBehaviour
             jumping = false;
         }
 
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            
+        }
+
         horizontalMovement = Input.GetAxis("Horizontal");
+        animator.SetFloat("Velocity", Mathf.Abs(horizontalMovement));
+
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
-        horizontalMovement = horizontalMovement * Time.deltaTime * speed;
-        myRigidbody.position = new Vector3(myRigidbody.position.x + horizontalMovement, myRigidbody.position.y, myRigidbody.position.z);
+        float newHorizontalMovement = horizontalMovement * Time.fixedDeltaTime * speed;
+        myRigidbody.position = new Vector3(myRigidbody.position.x + newHorizontalMovement, myRigidbody.position.y, myRigidbody.position.z);
+        
+        if(horizontalMovement > 0.1)
+        {
+            transform.rotation = Quaternion.Euler(0.0f, 90.0f, 0.0f);
+        }
+        else if(horizontalMovement < -0.1)
+        {
+            transform.rotation = Quaternion.Euler(0.0f, -90.0f, 0.0f);
+        }
+
+        
 
         if (jumping && grounded)
         {
