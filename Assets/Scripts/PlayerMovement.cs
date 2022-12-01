@@ -61,4 +61,9 @@ public class PlayerMovement : MonoBehaviour
             grounded = false;
         }
     }
+
+    public bool IsJumping()
+    {
+        return !grounded;
+    }
 }
