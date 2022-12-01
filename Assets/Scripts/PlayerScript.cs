@@ -6,16 +6,20 @@ public class PlayerScript : MonoBehaviour
 {
     public float speed = 5.0f;
     public float jumpHeight = 5.0f;
-    
+
+    public bool facingRight = true;
+
 
     bool jumping;
     bool grounded;
     float horizontalMovement;
+     
+
 
     Rigidbody myRigidbody;
     Animator animator;
 
-    // Start is called before the first frame update
+    // Start is called before t he first frame update
     void Start()
     {
         myRigidbody = this.GetComponent<Rigidbody>();
@@ -52,10 +56,12 @@ public class PlayerScript : MonoBehaviour
         if(horizontalMovement > 0.1)
         {
             transform.rotation = Quaternion.Euler(0.0f, 90.0f, 0.0f);
+            facingRight = true;
         }
         else if(horizontalMovement < -0.1)
         {
             transform.rotation = Quaternion.Euler(0.0f, -90.0f, 0.0f);
+            facingRight = false;
         }
 
         
@@ -71,6 +77,7 @@ public class PlayerScript : MonoBehaviour
         if(other.gameObject.tag == "Sol")
         {
             grounded = true;
+            animator.SetBool("Jumping", false);
         }
     }
 
@@ -79,6 +86,7 @@ public class PlayerScript : MonoBehaviour
         if (other.gameObject.tag == "Sol")
         {
             grounded = false;
+            animator.SetBool("Jumping", true);
         }
     }
 }
