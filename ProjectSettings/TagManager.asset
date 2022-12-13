@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Sol
   - Mur
+  - Hookable
   layers:
   - Default
   - TransparentFX

@@ -99,4 +99,9 @@ public class PlayerScript : EntityScript
             }
         }
     }
+
+    public bool IsJumping()
+    {
+        return !grounded;
+    }
 }
