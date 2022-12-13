@@ -42,9 +42,9 @@ public class PlayerScript : MonoBehaviour
         {
             if (Input.GetButtonDown("Jump"))
             {
-                Debug.Log("espace");
-                characterState = PlayerAction.Climbing;
-                Climbs();
+                characterState = PlayerAction.Jumping;
+                jumping = true;
+
             }
 
 
