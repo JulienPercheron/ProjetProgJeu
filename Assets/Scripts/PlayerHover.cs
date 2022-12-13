@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(PlayerMovement))]
+[RequireComponent(typeof(PlayerScript))]
 public class PlayerHover : MonoBehaviour
 {
-    private PlayerMovement _movement;
+    private PlayerScript _movement;
     private Rigidbody _rb;
 
     public Image loadingCircle;
@@ -27,7 +27,7 @@ public class PlayerHover : MonoBehaviour
     
     void Start()
     {
-        _movement = GetComponent<PlayerMovement>();
+        _movement = GetComponent<PlayerScript>();
         _rb = GetComponent<Rigidbody>();
     }
 

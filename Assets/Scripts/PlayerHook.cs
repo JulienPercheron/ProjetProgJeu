@@ -20,13 +20,13 @@ public class PlayerHook : MonoBehaviour
     private SpringJoint _springJoint;
     private LineRenderer _lineRenderer;
 
-    private PlayerMovement _playerMovement;
+    private PlayerScript _playerMovement;
     
     // Start is called before the first frame update
     void Start()
     {
         _rb = GetComponent<Rigidbody>();
-        _playerMovement = GetComponent<PlayerMovement>();
+        _playerMovement = GetComponent<PlayerScript>();
         hookObjects = new();
     }
 
@@ -46,7 +46,7 @@ public class PlayerHook : MonoBehaviour
         //Update line renderer for the hook
         if (isHook)
         {
-            _lineRenderer.SetPosition(0, _rb.position);
+            _lineRenderer.SetPosition(0, _rb.position + new Vector3(0, 1f, 0));
         }
         
         if (canHook && !isHook && Input.GetKeyDown(KeyCode.F))
@@ -91,7 +91,7 @@ public class PlayerHook : MonoBehaviour
         _springJoint.damper = 7f;
         _springJoint.massScale = 4.5f;
             
-        _lineRenderer.SetPosition(0, _rb.position);
+        _lineRenderer.SetPosition(0, _rb.position + new Vector3(0,1f,0));
         _lineRenderer.SetPosition(1, hookObjects[0].transform.position);
 
         _lineRenderer.startWidth = 0.1f;

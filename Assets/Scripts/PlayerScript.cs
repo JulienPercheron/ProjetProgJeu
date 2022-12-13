@@ -20,7 +20,7 @@ public class PlayerScript : EntityScript
     void Start()
     {
         myRigidbody = this.GetComponent<Rigidbody>();
-        animator = this.GetComponent<Animator>();
+        animator = this.GetComponentInChildren<Animator>();
     }
 
     private void Update()

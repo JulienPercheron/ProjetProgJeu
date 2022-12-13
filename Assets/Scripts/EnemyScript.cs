@@ -6,7 +6,8 @@ using UnityEngine.AI;
 public class EnemyScript : EntityScript
 {
     NavMeshAgent agent;
-    GameObject player; 
+    GameObject player;
+    public float detectionRadius = 8.0f; 
 
 
     void Start()
@@ -19,7 +20,7 @@ public class EnemyScript : EntityScript
     // Update is called once per frame
     void Update()
     {
-        if(player != null && Vector3.Distance(this.transform.position, player.transform.position) < 5)
+        if(player != null && Vector3.Distance(this.transform.position, player.transform.position) < detectionRadius)
         {
             agent.destination = player.transform.position;
         }
