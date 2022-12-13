@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,25 +14,59 @@ public class PlayerScript : EntityScript
 
     bool jumping;
     bool grounded;
+
+public enum PlayerAction
+{
+    Jumping, grounded, Climbing, Hung
+}
+
+    private float _fallMultiplier;
+    private float _lowJumpMultiplier;
+    public PlayerAction characterState;
+    private bool jumping;
+    private bool grounded;
     float horizontalMovement;
      
-
     // Start is called before t he first frame update
     void Start()
     {
         myRigidbody = this.GetComponent<Rigidbody>();
         animator = this.GetComponentInChildren<Animator>();
+    
+        characterState = PlayerAction.grounded;
+        _fallMultiplier = 2.5f;
+        _lowJumpMultiplier = 2f;
     }
+
 
     private void Update()
     {
-        if (Input.GetButtonDown("Jump"))
+        if (characterState == PlayerAction.Hung)
         {
-            jumping = true;
+            if (Input.GetButtonDown("Jump"))
+            {
+                characterState = PlayerAction.Jumping;
+                jumping = true;
+
+            }
+
+
+
         }
-        if (Input.GetButtonUp("Jump"))
+        if (characterState != PlayerAction.Climbing && characterState != PlayerAction.Hung)
         {
-            jumping = false;
+            if (Input.GetButtonDown("Jump"))
+            {
+                jumping = true;
+            }
+            if (Input.GetButtonUp("Jump"))
+            {
+                jumping = false;
+            }
+    
+        
+            horizontalMovement = Input.GetAxis("Horizontal");
+
         }
 
         if (Input.GetKeyDown(KeyCode.E))
@@ -44,35 +79,80 @@ public class PlayerScript : EntityScript
 
     }
 
+
+
+
     // Update is called once per frame
     void FixedUpdate()
     {
-        float newHorizontalMovement = horizontalMovement * Time.fixedDeltaTime * speed;
-        myRigidbody.position = new Vector3(myRigidbody.position.x + newHorizontalMovement, myRigidbody.position.y, myRigidbody.position.z);
-        
-        if(horizontalMovement > 0.1)
-        {
-            transform.rotation = Quaternion.Euler(0.0f, 90.0f, 0.0f);
-            facingRight = true;
-        }
-        else if(horizontalMovement < -0.1)
-        {
-            transform.rotation = Quaternion.Euler(0.0f, -90.0f, 0.0f);
-            facingRight = false;
-        }
+
+    
+            if (characterState != PlayerAction.Hung){
 
         
 
-        if (jumping && grounded)
-        {
-            myRigidbody.AddForce(0.0f, jumpHeight, 0.0f, ForceMode.Impulse);
+            horizontalMovement = horizontalMovement * Time.deltaTime * speed;
+            myRigidbody.position = new Vector3(myRigidbody.position.x + horizontalMovement, myRigidbody.position.y, myRigidbody.position.z);
+
+
+            if (jumping && grounded)
+            {
+                myRigidbody.AddForce(0.0f, jumpHeight, 0.0f, ForceMode.Impulse);
+            }
+
+            if (myRigidbody.velocity.y < 0)
+            {
+                myRigidbody.velocity += Vector3.up * Physics2D.gravity.y * (_fallMultiplier - 1) * Time.deltaTime;
+
+            }
+            else if (myRigidbody.velocity.y > 0 && !(Input.GetButtonUp("Jump")))
+            {
+
+                myRigidbody.velocity = Vector3.up * Mathf.Clamp(myRigidbody.velocity.y + Vector3.up.y * Physics2D.gravity.y * (_lowJumpMultiplier - 1) * Time.deltaTime, -30f, 15f);
+
+            }
         }
+      
+    }
+
+
+
+
+
+
+        
+
+        IEnumerator ClimbingCoroutine()
+        {
+
+            yield return new WaitForSeconds(2.5f);
+
+            transform.position = new Vector3(transform.position.x + 0.25f, transform.position.y + 2.50f, transform.position.z);
+            myRigidbody.useGravity = true;
+            characterState = PlayerAction.grounded;
+
+
+
+    }
+
+
+
+
+
+    private void Climbs()
+    {
+        characterState = PlayerAction.Climbing;
+        //animation here;
+        StartCoroutine(ClimbingCoroutine());
+
+
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.gameObject.tag == "Sol")
+        if(other.gameObject.tag == "Sol"  || other.tag == "Plateform")
         {
+            characterState = PlayerAction.grounded;
             grounded = true;
             animator.SetBool("Jumping", false);
         }
@@ -80,10 +160,12 @@ public class PlayerScript : EntityScript
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.tag == "Sol")
+        if (other.gameObject.tag == "Sol" || other.tag == "Plateform")
         {
+
             grounded = false;
             animator.SetBool("Jumping", true);
+            characterState =  PlayerAction.Jumping;
         }
     }
 
@@ -105,3 +187,7 @@ public class PlayerScript : EntityScript
         return !grounded;
     }
 }
+
+
+
+
