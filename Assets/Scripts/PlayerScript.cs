@@ -3,6 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum PlayerAction
+{
+    Jumping, grounded, Climbing, Hung
+}
+
 public class PlayerScript : EntityScript
 {
     public GameObject loseScreen;
@@ -12,13 +17,7 @@ public class PlayerScript : EntityScript
     public bool facingRight = true;
 
 
-    bool jumping;
-    bool grounded;
 
-public enum PlayerAction
-{
-    Jumping, grounded, Climbing, Hung
-}
 
     private float _fallMultiplier;
     private float _lowJumpMultiplier;
@@ -67,6 +66,17 @@ public enum PlayerAction
         
             horizontalMovement = Input.GetAxis("Horizontal");
 
+            if (horizontalMovement > 0.1)
+            {
+                transform.rotation = Quaternion.Euler(0.0f, 90.0f, 0.0f);
+                facingRight = true;
+            }
+            else if (horizontalMovement < -0.1)
+            {
+                transform.rotation = Quaternion.Euler(0.0f, -90.0f, 0.0f);
+                facingRight = false;
+
+            }
         }
 
         if (Input.GetKeyDown(KeyCode.E))

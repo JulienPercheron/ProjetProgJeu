@@ -6,7 +6,7 @@ public class EntityScript : MonoBehaviour
 {
     public int PointsDeVie = 5;
     public float speed = 5.0f;
-    protected Rigidbody myRigidbody;
+    public Rigidbody myRigidbody;
     protected Animator animator;
 
 }

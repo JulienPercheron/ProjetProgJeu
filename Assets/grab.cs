@@ -12,7 +12,7 @@ public class grab : MonoBehaviour
 
     private void OnTriggerEnter(Collider plateform)
     {
-        if(plateform.tag == "Plateform" &&  (script.characterState == PlayerAction.Jumping || script.characterState == PlayerAction.grounded) )
+        if(plateform.tag == "Plateform" && (script.characterState == PlayerAction.Jumping || script.characterState == PlayerAction.grounded) )
         {
             script.myRigidbody.velocity = Vector3.zero;
             script.myRigidbody.useGravity = false;
