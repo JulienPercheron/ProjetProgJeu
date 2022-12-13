@@ -23,6 +23,7 @@ public class FlagScript : MonoBehaviour
         if(collision.gameObject.tag == "Player")
         {
             winScreen.SetActive(true);
+            Time.timeScale = 0f;
         }
     }
 }

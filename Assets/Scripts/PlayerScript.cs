@@ -2,9 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerScript : MonoBehaviour
+public class PlayerScript : EntityScript
 {
-    public float speed = 5.0f;
+    public GameObject loseScreen;
+
     public float jumpHeight = 5.0f;
 
     public bool facingRight = true;
@@ -14,10 +15,6 @@ public class PlayerScript : MonoBehaviour
     bool grounded;
     float horizontalMovement;
      
-
-
-    Rigidbody myRigidbody;
-    Animator animator;
 
     // Start is called before t he first frame update
     void Start()
@@ -87,6 +84,19 @@ public class PlayerScript : MonoBehaviour
         {
             grounded = false;
             animator.SetBool("Jumping", true);
+        }
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.layer == 8)
+        {
+            this.PointsDeVie -= 1;
+            if (this.PointsDeVie <= 0)
+            {
+                loseScreen.SetActive(true);
+                Destroy(this.gameObject);
+            }
         }
     }
 }

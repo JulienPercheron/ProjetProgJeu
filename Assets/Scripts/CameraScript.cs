@@ -10,9 +10,12 @@ public class CameraScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Vector3 pos = player.transform.position;
-        pos.y += 1.0f;
-        pos.z -= eloignement;
-        transform.position = pos;
+        if(player != null)
+        {
+            Vector3 pos = player.transform.position;
+            pos.y += 1.0f;
+            pos.z -= eloignement;
+            transform.position = pos;
+        }
     }
 }

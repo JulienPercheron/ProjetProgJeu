@@ -9,6 +9,9 @@ public class BulletScript : MonoBehaviour
 
     private void Start()
     {
+        Physics.IgnoreLayerCollision(6, 7);
+        Physics.IgnoreLayerCollision(7, 7);
+        this.GetComponent<Rigidbody>();
     }
 
 
