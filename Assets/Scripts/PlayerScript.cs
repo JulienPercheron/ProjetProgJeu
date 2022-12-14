@@ -17,15 +17,17 @@ public class PlayerScript : EntityScript
     public bool facingRight = true;
 
 
-
-
     private float _fallMultiplier;
     private float _lowJumpMultiplier;
     public PlayerAction characterState;
     private bool jumping;
     private bool grounded;
     float horizontalMovement;
-     
+    
+    public float TestConstant = 100;
+
+    private GameObject onPlatform;
+    
     // Start is called before t he first frame update
     void Start()
     {
@@ -54,11 +56,11 @@ public class PlayerScript : EntityScript
         }
         if (characterState != PlayerAction.Climbing && characterState != PlayerAction.Hung)
         {
-            if (Input.GetButtonDown("Jump"))
+            if(Input.GetAxisRaw("Jump") > 0)
             {
                 jumping = true;
             }
-            if (Input.GetButtonUp("Jump"))
+            if (Input.GetAxisRaw("Jump") == 0)
             {
                 jumping = false;
             }
@@ -95,12 +97,13 @@ public class PlayerScript : EntityScript
     // Update is called once per frame
     void FixedUpdate()
     {
+        if (onPlatform)
+        {
+            myRigidbody.velocity += onPlatform.GetComponent<Rigidbody>().velocity;
+        }
 
-    
-            if (characterState != PlayerAction.Hung){
-
-        
-
+        if (characterState != PlayerAction.Hung){
+            
             horizontalMovement = horizontalMovement * Time.deltaTime * speed;
             myRigidbody.position = new Vector3(myRigidbody.position.x + horizontalMovement, myRigidbody.position.y, myRigidbody.position.z);
 
@@ -160,8 +163,23 @@ public class PlayerScript : EntityScript
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.gameObject.tag == "Sol"  || other.tag == "Plateform")
+        if(other.gameObject.tag == "Sol"  || other.tag == "Plateform" || other.tag == "MoveablePlateform")
         {
+            characterState = PlayerAction.grounded;
+            grounded = true;
+            animator.SetBool("Jumping", false);
+        }
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if(other.gameObject.tag == "Sol"  || other.tag == "Plateform" || other.tag == "MoveablePlateform")
+        {
+            if (other.tag == "MoveablePlateform")
+                onPlatform = other.gameObject;
+            else
+                onPlatform = null;
+
             characterState = PlayerAction.grounded;
             grounded = true;
             animator.SetBool("Jumping", false);
@@ -170,9 +188,8 @@ public class PlayerScript : EntityScript
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.tag == "Sol" || other.tag == "Plateform")
+        if (other.gameObject.tag == "Sol" || other.tag == "Plateform" || other.tag == "MoveablePlateform")
         {
-
             grounded = false;
             animator.SetBool("Jumping", true);
             characterState =  PlayerAction.Jumping;

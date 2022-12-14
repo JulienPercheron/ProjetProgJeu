@@ -35,24 +35,24 @@ public class PlayerHover : MonoBehaviour
     void Update()
     {
 
-        if (_movement.IsJumping() && Input.GetKeyDown(KeyCode.LeftShift) && !isGlide)
+        if (_movement.IsJumping() && Input.GetAxisRaw("Fire3") > 0 && !isGlide)
         {
             isGlide = true;
         }
         
-        if(Input.GetKeyUp(KeyCode.LeftShift) && isGlide)
+        if(Input.GetAxisRaw("Fire3") == 0 && isGlide)
         {
             isGlide = false;
         }
 
-        if(isGlide){
+        if(isGlide && glideTime < glideMaxTime){
             glideTime += Time.deltaTime;
             if (glideTime > glideMaxTime)
             {
-                glideTime = 0;
+                glideTime = glideMaxTime;
                 isGlide = false;
             }
-
+            
             loadingCircle.fillAmount = 1 - (glideTime / glideMaxTime);
             _rb.useGravity = false;
             gliderMesh.gameObject.SetActive(true);
@@ -64,7 +64,11 @@ public class PlayerHover : MonoBehaviour
             gliderMesh.gameObject.SetActive(false);
             canGlide = false;
             _rb.useGravity = true;
-            glideTime = 0;
+        }
+        
+        if(!isGlide && glideTime > 0)
+        {
+            glideTime -= Time.deltaTime * 0.6f;
             loadingCircle.fillAmount = 1 - (glideTime / glideMaxTime);
         }
     }

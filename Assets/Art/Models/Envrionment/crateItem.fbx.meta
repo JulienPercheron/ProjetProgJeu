@@ -1,14 +1,9 @@
 fileFormatVersion: 2
-guid: 4a6ff214bf79b004c8fb92b147ed132b
+guid: 25bbd367d3355a0459059b85c387968a
 ModelImporter:
   serializedVersion: 21300
   internalIDToNameTable: []
-  externalObjects:
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: flag_blueMat
-    second: {fileID: 2100000, guid: 57edbeb450662c44e9c5855ca4197641, type: 2}
+  externalObjects: {}
   materials:
     materialImportMode: 2
     materialName: 0

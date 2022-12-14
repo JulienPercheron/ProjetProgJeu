@@ -8,6 +8,7 @@ TagManager:
   - Mur
   - Plateform
   - Hookable
+  - MoveablePlateform
   layers:
   - Default
   - TransparentFX

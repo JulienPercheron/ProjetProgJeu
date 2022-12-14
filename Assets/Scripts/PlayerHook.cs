@@ -49,7 +49,7 @@ public class PlayerHook : MonoBehaviour
             _lineRenderer.SetPosition(0, _rb.position + new Vector3(0, 1f, 0));
         }
         
-        if (canHook && !isHook && Input.GetKeyDown(KeyCode.F))
+        if (canHook && !isHook && Input.GetAxis("Fire2") > 0)
         {
             SetupHook();
 
@@ -59,7 +59,7 @@ public class PlayerHook : MonoBehaviour
         }
     
         
-        if (isHook && Input.GetKeyUp(KeyCode.F))
+        if (isHook && Input.GetAxis("Fire2") == 0)
         {   
             isHook = false;
 
