@@ -14,10 +14,16 @@ public class grab : MonoBehaviour
     {
         if(plateform.tag == "Plateform" && (script.characterState == PlayerAction.Jumping || script.characterState == PlayerAction.grounded) )
         {
-            script.myRigidbody.velocity = Vector3.zero;
-            script.myRigidbody.useGravity = false;
-            script.characterState = PlayerAction.Hung;
+            script.SetHung();
 
+        }
+    }
+
+    private void OnTriggerExit(Collider plateform)
+    {
+        if (plateform.tag == "Plateform" && (script.characterState == PlayerAction.Jumping || script.characterState == PlayerAction.grounded))
+        {
+            script.SetGrounded(false);
         }
     }
 }

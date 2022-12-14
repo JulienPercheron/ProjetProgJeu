@@ -38,11 +38,13 @@ public class PlayerHover : MonoBehaviour
         if (_movement.IsJumping() && Input.GetKeyDown(KeyCode.LeftShift) && !isGlide)
         {
             isGlide = true;
+            _rb.useGravity = false;
         }
         
         if(Input.GetKeyUp(KeyCode.LeftShift) && isGlide)
         {
             isGlide = false;
+            _rb.useGravity = true;
         }
 
         if(isGlide){
@@ -54,7 +56,7 @@ public class PlayerHover : MonoBehaviour
             }
 
             loadingCircle.fillAmount = 1 - (glideTime / glideMaxTime);
-            _rb.useGravity = false;
+            
             gliderMesh.gameObject.SetActive(true);
 
             _rb.velocity = new Vector3(Mathf.Clamp(_rb.velocity.x, 0,  4), -glideSpeed);
@@ -63,7 +65,7 @@ public class PlayerHover : MonoBehaviour
         {
             gliderMesh.gameObject.SetActive(false);
             canGlide = false;
-            _rb.useGravity = true;
+            
             glideTime = 0;
             loadingCircle.fillAmount = 1 - (glideTime / glideMaxTime);
         }
