@@ -14,6 +14,14 @@ public class GroundChecker : MonoBehaviour
             playerScript.SetGrounded(true);
         }
     }
+    private void OnTriggerStay(Collider other)
+    {
+        if(other.gameObject.tag == "Sol"  || other.tag == "Plateform" || other.tag == "MoveablePlateform")
+        {
+            playerScript.characterState = PlayerAction.grounded;
+            playerScript.SetGrounded(true);
+        }
+    }
 
     private void OnTriggerExit(Collider other)
     {

@@ -15,7 +15,7 @@ public class grab : MonoBehaviour
         if(plateform.tag == "Plateform" && (script.characterState == PlayerAction.Jumping || script.characterState == PlayerAction.grounded) )
         {
             script.SetHung();
-
+            Debug.Log("GARFIELD");
         }
     }
 

@@ -132,16 +132,7 @@ public class PlayerScript : EntityScript
         characterState = PlayerAction.Hung;
     }
 
-    private void OnTriggerStay(Collider other)
-    {
-        if(other.gameObject.tag == "Sol"  || other.tag == "Plateform" || other.tag == "MoveablePlateform")
-        {
-            characterState = PlayerAction.grounded;
-            grounded = true;
-            animator.SetBool("Jumping", false);
-        }
-    }
-    
+
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.layer == 8)
