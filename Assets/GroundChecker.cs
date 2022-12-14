@@ -8,7 +8,7 @@ public class GroundChecker : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag == "Sol" || other.gameObject.tag == "Plateform")
+        if (other.gameObject.tag == "Sol" || other.gameObject.tag == "Plateform" || other.gameObject.tag == "MoveablePlateform")
         {
             playerScript.characterState = PlayerAction.grounded;
             playerScript.SetGrounded(true);
@@ -17,7 +17,7 @@ public class GroundChecker : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.tag == "Sol" || other.gameObject.tag == "Plateform")
+        if (other.gameObject.tag == "Sol" || other.gameObject.tag == "Plateform" || other.gameObject.tag == "MoveablePlateform")
         {
             playerScript.SetGrounded(false);
             playerScript.characterState = PlayerAction.Jumping;

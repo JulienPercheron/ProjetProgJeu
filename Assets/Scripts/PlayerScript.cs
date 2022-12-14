@@ -25,11 +25,7 @@ public class PlayerScript : EntityScript
     [SerializeField]
     private bool grounded;
     float horizontalMovement;
-    
-    public float TestConstant = 100;
 
-    private GameObject onPlatform;
-    
     // Start is called before t he first frame update
     void Start()
     {
@@ -44,26 +40,28 @@ public class PlayerScript : EntityScript
 
     private void Update()
     {
-            if (Input.GetButtonDown("Jump"))
-            {
-                characterState = PlayerAction.Jumping;
-                jumping = true;
-                myRigidbody.useGravity = true;
-            }
-
-
-
+        if (Input.GetButtonDown("Jump"))
+        {
+            characterState = PlayerAction.Jumping;
+            jumping = true;
+            myRigidbody.useGravity = true;
         }
+
+
+
+
         if (characterState != PlayerAction.Climbing && characterState != PlayerAction.Hung)
         {
-            if(Input.GetAxisRaw("Jump") > 0)
+            if (Input.GetAxisRaw("Jump") > 0)
             {
                 jumping = true;
             }
+
             if (Input.GetAxisRaw("Jump") == 0)
             {
                 jumping = false;
             }
+        }
 
         if (characterState != PlayerAction.Hung)
         {
@@ -94,11 +92,6 @@ public class PlayerScript : EntityScript
     // Update is called once per frame
     void FixedUpdate()
     {
-        if (onPlatform)
-        {
-            myRigidbody.velocity += onPlatform.GetComponent<Rigidbody>().velocity;
-        }
-
         if (characterState != PlayerAction.Hung){
             
             horizontalMovement = horizontalMovement * Time.deltaTime * speed;
@@ -125,16 +118,6 @@ public class PlayerScript : EntityScript
       
     }
 
-
-
-
-
-
-        
-
-
-
-
     public void SetGrounded(bool grounded)
     {
         this.grounded = grounded;
@@ -143,45 +126,22 @@ public class PlayerScript : EntityScript
 
     public void SetHung()
     {
-        if(other.gameObject.tag == "Sol"  || other.tag == "Plateform" || other.tag == "MoveablePlateform")
-        {
-            characterState = PlayerAction.grounded;
-            grounded = true;
-            animator.SetBool("Jumping", false);
-        }
-    }
-
-    private void OnTriggerStay(Collider other)
-    {
-        if(other.gameObject.tag == "Sol"  || other.tag == "Plateform" || other.tag == "MoveablePlateform")
-        {
-            if (other.tag == "MoveablePlateform")
-                onPlatform = other.gameObject;
-            else
-                onPlatform = null;
-
-            characterState = PlayerAction.grounded;
-            grounded = true;
-            animator.SetBool("Jumping", false);
-        }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.gameObject.tag == "Sol" || other.tag == "Plateform" || other.tag == "MoveablePlateform")
-        {
-            grounded = false;
-            animator.SetBool("Jumping", true);
-            characterState =  PlayerAction.Jumping;
-        }
-    }
         myRigidbody.velocity = Vector3.zero;
         myRigidbody.useGravity = false;
         grounded = true;
         characterState = PlayerAction.Hung;
     }
 
-
+    private void OnTriggerStay(Collider other)
+    {
+        if(other.gameObject.tag == "Sol"  || other.tag == "Plateform" || other.tag == "MoveablePlateform")
+        {
+            characterState = PlayerAction.grounded;
+            grounded = true;
+            animator.SetBool("Jumping", false);
+        }
+    }
+    
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.layer == 8)
@@ -194,11 +154,12 @@ public class PlayerScript : EntityScript
             }
         }
     }
-
+    
     public bool IsJumping()
     {
         return !grounded;
     }
+    
 }
 
 
