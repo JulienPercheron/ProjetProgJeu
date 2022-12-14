@@ -21,6 +21,8 @@ public class PlayerScript : EntityScript
     private float _lowJumpMultiplier;
     public PlayerAction characterState;
     private bool jumping;
+
+    [SerializeField]
     private bool grounded;
     float horizontalMovement;
     
@@ -42,13 +44,11 @@ public class PlayerScript : EntityScript
 
     private void Update()
     {
-        if (characterState == PlayerAction.Hung)
-        {
             if (Input.GetButtonDown("Jump"))
             {
                 characterState = PlayerAction.Jumping;
                 jumping = true;
-
+                myRigidbody.useGravity = true;
             }
 
 
@@ -64,6 +64,9 @@ public class PlayerScript : EntityScript
             {
                 jumping = false;
             }
+
+        if (characterState != PlayerAction.Hung)
+        {
     
         
             horizontalMovement = Input.GetAxis("Horizontal");
@@ -77,17 +80,11 @@ public class PlayerScript : EntityScript
             {
                 transform.rotation = Quaternion.Euler(0.0f, -90.0f, 0.0f);
                 facingRight = false;
-
             }
-        }
 
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            
-        }
+            animator.SetFloat("Velocity", Mathf.Abs(horizontalMovement));
 
-        horizontalMovement = Input.GetAxis("Horizontal");
-        animator.SetFloat("Velocity", Mathf.Abs(horizontalMovement));
+        }
 
     }
 
@@ -135,33 +132,16 @@ public class PlayerScript : EntityScript
 
         
 
-        IEnumerator ClimbingCoroutine()
-        {
-
-            yield return new WaitForSeconds(2.5f);
-
-            transform.position = new Vector3(transform.position.x + 0.25f, transform.position.y + 2.50f, transform.position.z);
-            myRigidbody.useGravity = true;
-            characterState = PlayerAction.grounded;
 
 
 
-    }
-
-
-
-
-
-    private void Climbs()
+    public void SetGrounded(bool grounded)
     {
-        characterState = PlayerAction.Climbing;
-        //animation here;
-        StartCoroutine(ClimbingCoroutine());
-
-
+        this.grounded = grounded;
+        animator.SetBool("Jumping", !grounded);
     }
 
-    private void OnTriggerEnter(Collider other)
+    public void SetHung()
     {
         if(other.gameObject.tag == "Sol"  || other.tag == "Plateform" || other.tag == "MoveablePlateform")
         {
@@ -195,6 +175,12 @@ public class PlayerScript : EntityScript
             characterState =  PlayerAction.Jumping;
         }
     }
+        myRigidbody.velocity = Vector3.zero;
+        myRigidbody.useGravity = false;
+        grounded = true;
+        characterState = PlayerAction.Hung;
+    }
+
 
     private void OnCollisionEnter(Collision collision)
     {

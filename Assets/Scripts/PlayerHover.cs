@@ -38,11 +38,13 @@ public class PlayerHover : MonoBehaviour
         if (_movement.IsJumping() && Input.GetAxisRaw("Fire3") > 0 && !isGlide)
         {
             isGlide = true;
+            _rb.useGravity = false;
         }
         
         if(Input.GetAxisRaw("Fire3") == 0 && isGlide)
         {
             isGlide = false;
+            _rb.useGravity = true;
         }
 
         if(isGlide && glideTime < glideMaxTime){
@@ -54,7 +56,7 @@ public class PlayerHover : MonoBehaviour
             }
             
             loadingCircle.fillAmount = 1 - (glideTime / glideMaxTime);
-            _rb.useGravity = false;
+            
             gliderMesh.gameObject.SetActive(true);
 
             _rb.velocity = new Vector3(Mathf.Clamp(_rb.velocity.x, 0,  4), -glideSpeed);
@@ -69,6 +71,8 @@ public class PlayerHover : MonoBehaviour
         if(!isGlide && glideTime > 0)
         {
             glideTime -= Time.deltaTime * 0.6f;
+            
+            glideTime = 0;
             loadingCircle.fillAmount = 1 - (glideTime / glideMaxTime);
         }
     }

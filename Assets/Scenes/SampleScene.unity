@@ -8277,11 +8277,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3270265897377992053, guid: 8b074f7d9cd0f6840a29678107e099ab, type: 3}
+      propertyPath: m_UseGravity
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3270265897377992055, guid: 8b074f7d9cd0f6840a29678107e099ab, type: 3}
       propertyPath: loadingCircle
       value: 
       objectReference: {fileID: 761387888}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 3270265897377992051, guid: 8b074f7d9cd0f6840a29678107e099ab, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 8b074f7d9cd0f6840a29678107e099ab, type: 3}
 --- !u!1001 &8893136590951789278
 PrefabInstance:
